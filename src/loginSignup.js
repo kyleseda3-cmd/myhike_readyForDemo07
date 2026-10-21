@@ -20,7 +20,8 @@ import {
 // Handles toggling between Login/Signup views and form submits
 // using plain DOM APIs for simplicity and maintainability.
 
-
+window.location.assign("main.html");
+return; // Stop the rest of the Firebase script from executing
 function initAuthUI() {
     // --- DOM Elements ---
     const alertEl = document.getElementById('authAlert');

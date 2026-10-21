@@ -1,5 +1,8 @@
+import { db } from "./firebaseConfig.js";
+import { doc, onSnapshot } from "firebase/firestore";
 import { onAuthReady } from "/src/authentication.js";
-
+document.getElementById("name-goes-here").innerText = "Kyle Seda"; 
+document.getElementById("quote-goes-here").innerText = "This is a wonderful test quote!";
 function showName(){
     console.log("test showName")
     onAuthReady (function(user){
@@ -12,6 +15,25 @@ function showName(){
             console.log("user not logged in")
         }
     })
+    
 }
 
 showName();
+// Function to read the quote of the day from Firestore
+function readQuote(day) {
+    const quoteDocRef = doc(db, "quotes", day); // Get a reference to the document
+
+    onSnapshot(quoteDocRef, docSnap => { // Listen for real-time updates
+        if (docSnap.exists()) {          //Document existence check
+            document.getElementById("quote-goes-here").innerHTML = docSnap.data().quote;
+        } else {
+            console.log("No such document!");
+        }
+    }, (error) => {                      //Listener/system error
+        console.error("Error listening to document: ", error);
+    });
+}
+readQuote("tuesday");
+showName();
+document.getElementById("name-goes-here").innerText = "Kyle";
+document.getElementById("quote-goes-here").innerText = "The journey of a thousand miles begins with a single step.";
